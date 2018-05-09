@@ -5,7 +5,7 @@
  * For more details take a look at the Java Libraries chapter in the Gradle
  * user guide available at https://docs.gradle.org/4.6/userguide/java_library_plugin.html
  *
- * This line is just for test!
+ * This line is just for mail test!
  */
 
 plugins {
