@@ -2,6 +2,7 @@ package User;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,8 +27,32 @@ public class Account {
     	int _id=random.nextInt(89999)+10000;
     	int _pw=random.nextInt(8999)+1000;
     	
+    	File f = new File(String.valueOf(id)+"_balance.txt");
+    	if(f.exists()) {
+    		try {
+					BufferedReader br = new BufferedReader(new FileReader(String.valueOf(id)+"_balance.txt"));
+					String line = br.readLine();
+					br.close();
+					Balance=Integer.parseInt(line);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		PrintWriter fw;
+			try {
+				fw = new PrintWriter(String.valueOf(id)+"_balance.txt");
+				String data=String.valueOf(balance);
+				fw.println(data);
+				fw.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     	
-    	File f = new File(String.valueOf(id)+".txt");
+    	f = new File(String.valueOf(id)+".txt");
     	if(f.exists()) {
     		try {
 				BufferedReader br = new BufferedReader(new FileReader(String.valueOf(id)+".txt"));
@@ -35,7 +60,7 @@ public class Account {
 				while(true) {
 		            String line = br.readLine();
 		            if (line==null) break;
-		            
+		     
 		            if(i%2==0) arrayid.add(Integer.valueOf(line));
 		            else arraypw.add(Integer.valueOf(line));
 		            i++;
@@ -142,11 +167,11 @@ public class Account {
      */
     public int checkPW(int inputPW) {
         // TODO implement here
-    	System.out.println(password);
-    	System.out.println(inputPW);
+    	//(password);
+    	//(inputPW);
     	if(password==inputPW) {
-    		System.out.println(password);
-        	System.out.println(inputPW);
+    		//(password);
+        	//(inputPW);
     		return 1;
     	}
         return 0;
@@ -171,7 +196,20 @@ public class Account {
      */
     public int balanceAccount(int inputMoney) {
         // TODO implement here
-    	return checkBalance(inputMoney);
+    	int balance = checkBalance(inputMoney);
+    	if(balance>=0) {
+    		PrintWriter fw;
+			try {
+				fw = new PrintWriter(String.valueOf(ID)+"_balance.txt");
+				String data=String.valueOf(balance);
+				fw.println(data);
+				fw.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	return balance;
     }
 
     /**
@@ -180,14 +218,16 @@ public class Account {
      */
     public int checkBalance(int inputMoney) {
         // TODO implement here
-    	System.out.println(inputMoney);
+    	//(inputMoney);
     	if(Balance >= inputMoney) {
-    		System.out.println(inputMoney);
+    		//(inputMoney);
+    		int balance = Balance - inputMoney;
+    		if(balance<0 || balance >1000000000) return -4;
     		Balance-=inputMoney;
     		return Balance;
     	}
     	else {
-    		return -1;
+    		return -2;
     	}
     }
 

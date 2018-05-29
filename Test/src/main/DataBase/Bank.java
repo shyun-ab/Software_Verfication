@@ -76,16 +76,19 @@ public final class Bank {
         return 0;
     	}
     	else if(choose==2) {
+    	    currentraccount=null;
     		for(int index=0; index<account.size();index++) {
     	    	int check=account.get(index).checkID(inputID);
     	    	if(check==1) {
     	    		currentraccount = account.get(index);
+    	    		if(currentraccount.equals(currentaccount)) return 0;
     	    		return 1;
     	    	}
     	    	else {
     	    		check=account.get(index).searchCardID(inputID);
     	    		if(check==1) {
     	    			currentraccount = account.get(index);
+    	    			if(currentraccount.equals(currentaccount)) return 0;
     	    			return 1;
     	    		}
     	    	}
@@ -106,13 +109,17 @@ public final class Bank {
     	if(isAccount) {
     	check = currentaccount.checkPW(inputPW);
     	if(check == 1) {
+    		//currentaccount=null;
     		return 1;
     	}
     	return 0;
     	}
     	else {
     		check=currentaccount.searchCard(inputPW);
-			if(check==1) return 1;
+			if(check==1) {
+				//currentaccount=null;
+				return 1;
+			}
 			return 0;
     	}
 
@@ -124,14 +131,38 @@ public final class Bank {
      */
     public int balanceCount(int inputMoney) {
         // TODO implement here
-    	if(currentraccount!=null) {
-    		System.out.println(inputMoney);
-    		currentraccount.balanceAccount(-inputMoney);
+    	int balance = -2;
+    	if(currentaccount!=null&&currentraccount!=null) {
+    		balance = currentaccount.balanceAccount(inputMoney+1200);
+    		if(balance<0) return balance;
+    		int checkbalance = currentraccount.balanceAccount(-inputMoney);
+    		if(checkbalance<0) return checkbalance;
     	}
-    	if(currentaccount!=null) {
-    		return currentaccount.balanceAccount(inputMoney);
+    	else if(currentaccount!=null) {
+    		balance = currentaccount.balanceAccount(inputMoney);
+    		//currentaccount=null;
     	}
-    	return 0;
+    	else if(currentraccount!=null) {
+    		if((currentaccount==null)) {
+    			int checkbalance = currentraccount.balanceAccount(-inputMoney);
+    			return checkbalance;
+    		}
+    		//currentraccount=null;
+    	}
+//    	if(currentaccount!=null) {
+//    		balance = currentaccount.balanceAccount(inputMoney);
+//    		//currentaccount=null;
+//    	}
+//    	if(currentraccount!=null) {
+//
+//    		if((currentaccount==null) || (currentaccount!=null && balance>=0)) {
+//    			int checkbalance = currentraccount.balanceAccount(-inputMoney);
+//
+//    			if(checkbalance<0) return checkbalance;
+//    		}
+//    		//currentraccount=null;
+//    	}
+    	return balance;
     }
 
     /**
@@ -139,7 +170,10 @@ public final class Bank {
      */
     public int getAccountBalance() {
         // TODO implement here
-        return currentaccount.getBalance();
+    	int balance = currentaccount.getBalance();
+    	currentaccount=null;
+    	currentraccount=null;
+        return balance;
     }
 
 }

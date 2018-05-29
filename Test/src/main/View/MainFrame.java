@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JOptionPane;
 
 import System.System_Control;
-import javafx.scene.control.Alert;
+//import javafx.scene.control.Alert;
 
 public class MainFrame extends JFrame { // 1) 사용자에게 출력되는 메인 프레임
 
@@ -114,6 +114,22 @@ public class MainFrame extends JFrame { // 1) 사용자에게 출력되는 메인 프레임
 		});
 		button_3.setBounds(292, 290, 147, 43);
 		contentPane.add(button_3);
+		
+		if(sys.getATMcount().getCount50000()<=30 && sys.getATMcount().getCount10000()<=30) {
+		JLabel label = new JLabel("5만원권, 만원권 부족합니다");
+		label.setBounds(50, 300, 200, 15);
+		contentPane.add(label);
+		}
+		else if(sys.getATMcount().getCount50000()<=30) {
+			JLabel label = new JLabel("5만원권 부족합니다");
+			label.setBounds(50, 300, 150, 15);
+			contentPane.add(label);
+		}
+		else if(sys.getATMcount().getCount10000()<=30) {
+			JLabel label = new JLabel("만원권 부족합니다");
+			label.setBounds(50, 300, 150, 15);
+			contentPane.add(label);
+		}
 	}
 
 }
@@ -196,6 +212,32 @@ class Withdraw_Frame extends JFrame { // 3) 출금 금액을 입력하는 프레임
 					String str1 = textField_1.getText();
 					Boolean isempty=textField.getText().isEmpty();
 					Boolean isempty1=textField_1.getText().isEmpty();
+					if(isempty) str = "0";
+					if(isempty1) str1 = "0";
+					for(int i=0; i<str.length(); i++) {
+						if(str.charAt(i)>57 || str.charAt(i)<48) {
+							isempty= true;
+							isempty1= true;
+						}
+					}
+					for(int i=0; i<str1.length(); i++) {
+						if(str1.charAt(i)>57 || str1.charAt(i)<48) {
+							isempty= true;
+							isempty1= true;
+						}
+					}
+					try {
+						Integer.parseInt(str);
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+						if(!isempty) isempty= true;
+					}
+					try {
+						Integer.parseInt(str1);
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+						if(!isempty1) isempty1= true;
+					}
 					ArrayList<Integer> input = new ArrayList<Integer>();
 					if(isempty && isempty1){
 						JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
@@ -314,9 +356,68 @@ class Deposit_Frame extends JFrame { // 14) 입금 금액을 입력하는 프레임
 				if(isempty1) str1 = "0";
 				if(isempty2) str2 = "0";
 				if(isempty3) str3 = "0";
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				for(int i=0; i<str1.length(); i++) {
+					if(str1.charAt(i)>57 || str1.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				for(int i=0; i<str2.length(); i++) {
+					if(str2.charAt(i)>57 || str2.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true; 
+					}
+				}
+				for(int i=0; i<str3.length(); i++) {
+					if(str3.charAt(i)>57 || str3.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				try {
+					Integer.parseInt(str);
+					Integer.parseInt(str1);
+					Integer.parseInt(str2);
+					Integer.parseInt(str3);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true;
+					isempty1= true;
+					isempty2= true;
+					isempty3= true;
+				}
 				ArrayList<Integer> input = new ArrayList<Integer>();
 				if(isempty && isempty2 && isempty3 && isempty1) {
 					JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(Integer.valueOf(str).equals(0)&&Integer.valueOf(str1).equals(0)&&Integer.valueOf(str2).equals(0)&&Integer.valueOf(str3).equals(0)) {
+					JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(!isempty && Integer.parseInt(str)>500 || (MainFrame.getSystem().getATMcount().getCount50000()+Integer.parseInt(str) > 500)) {
+					JOptionPane.showMessageDialog(null, "5만원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(!isempty1 && Integer.parseInt(str1)>500 || (MainFrame.getSystem().getATMcount().getCount10000()+Integer.parseInt(str1) > 500)) {
+					JOptionPane.showMessageDialog(null, "만원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(!isempty2 && Integer.parseInt(str2)>500 || (MainFrame.getSystem().getATMcount().getCount5000()+Integer.parseInt(str2) > 500)) {
+					JOptionPane.showMessageDialog(null, "5천원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(!isempty3 && Integer.parseInt(str1)>500 || (MainFrame.getSystem().getATMcount().getCount1000()+Integer.parseInt(str3) > 500)) {
+					JOptionPane.showMessageDialog(null, "천원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
 					input.add(Integer.valueOf(str));
@@ -330,8 +431,20 @@ class Deposit_Frame extends JFrame { // 14) 입금 금액을 입력하는 프레임
 						inputPWF.setVisible(true);
 						dispose();
 					}
-					else {
+					else if(ischeck==-1){
 						JOptionPane.showMessageDialog(null, "비밀번호 확인하세요", "비밀번호 오류", JOptionPane.WARNING_MESSAGE);
+					}
+					else if(ischeck==-2){
+						JOptionPane.showMessageDialog(null, "잔고 확인하세요", "잔고 부족", JOptionPane.WARNING_MESSAGE);
+					}
+					else if(ischeck==-3) {
+						JOptionPane.showMessageDialog(null, "ATM잔고 부족입니다", "ATM잔고 부족", JOptionPane.WARNING_MESSAGE);
+					}
+					else if(ischeck==-4) {
+						JOptionPane.showMessageDialog(null, "일반계좌 최대 입금한도는 10억입니다", "한도초과", JOptionPane.WARNING_MESSAGE);
+					}
+					else if(ischeck==-5) {
+						JOptionPane.showMessageDialog(null, "ATM잔고 최대 한도는 초과입니다", "한도초과", JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
@@ -422,12 +535,19 @@ class Input_ID_Frame extends JFrame {
 		JButton button = new JButton("\uD655\uC778");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
+				String str = textField.getText();
+				Boolean isempty=textField.getText().isEmpty();
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) isempty= true; 
+				}
+				try {
+					Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true; 
+				}
 				if (sys.get_input_menu()==1)//입금     //&& sys.input_ID(input)==true)
 				{
-					String str = textField.getText();
-					Boolean isempty=textField.getText().isEmpty();
 					if(!isempty) {
 						Boolean ischeck = MainFrame.getSystem().input_ID(Integer.parseInt(str));
 						if(ischeck) {
@@ -445,8 +565,6 @@ class Input_ID_Frame extends JFrame {
 				}
 				else if(sys.get_input_menu()==2)//출금
 				{
-					String str = textField.getText();
-					Boolean isempty=textField.getText().isEmpty();
 					if(!isempty) {
 						Boolean ischeck = MainFrame.getSystem().input_ID(Integer.parseInt(str));
 						if(ischeck) {
@@ -464,8 +582,6 @@ class Input_ID_Frame extends JFrame {
 				}
 				else if(sys.get_input_menu()==3)//송금
 				{
-					String str = textField.getText();
-					Boolean isempty=textField.getText().isEmpty();
 					if(!isempty) {
 						Boolean ischeck = MainFrame.getSystem().input_ID(Integer.parseInt(str));
 						if(ischeck) {
@@ -484,8 +600,6 @@ class Input_ID_Frame extends JFrame {
 				}
 				else if(sys.get_input_menu()==4)//조회
 				{
-					String str = textField.getText();
-					Boolean isempty=textField.getText().isEmpty();
 					if(!isempty) {
 						Boolean ischeck = MainFrame.getSystem().input_ID(Integer.parseInt(str));
 						if(ischeck) {
@@ -567,6 +681,15 @@ class Remmitance_Frame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String str = textField.getText();
 				Boolean isempty=textField.getText().isEmpty();
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) isempty= true; 
+				}
+				try {
+					Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true; 
+				}
 				if(!isempty) {
 					ArrayList<Integer> input = new ArrayList<Integer>();
 					input.add(Integer.parseInt(str));
@@ -646,6 +769,15 @@ class ReceiverID_Frame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String str = textField.getText();
 				Boolean isempty=textField.getText().isEmpty();
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) isempty= true; 
+				}
+				try {
+					Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true; 
+				}
 				if(!isempty) {
 					Boolean ischeck = MainFrame.getSystem().input_RID(Integer.parseInt(str));
 					if(ischeck) {
@@ -775,8 +907,55 @@ class MDeposit_Frame extends JFrame {
 				if(isempty1) str1 = "0";
 				if(isempty2) str2 = "0";
 				if(isempty3) str3 = "0";
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				for(int i=0; i<str1.length(); i++) {
+					if(str1.charAt(i)>57 || str1.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				for(int i=0; i<str2.length(); i++) {
+					if(str2.charAt(i)>57 || str2.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true; 
+					}
+				}
+				for(int i=0; i<str3.length(); i++) {
+					if(str3.charAt(i)>57 || str3.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				try {
+					Integer.parseInt(str);
+					Integer.parseInt(str1);
+					Integer.parseInt(str2);
+					Integer.parseInt(str3);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true;
+					isempty1= true;
+					isempty2= true;
+					isempty3= true;
+				}
 				ArrayList<Integer> input = new ArrayList<Integer>();
 				if(isempty && isempty2 && isempty3 && isempty1) {
+					JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(Integer.valueOf(str).equals(0)&&Integer.valueOf(str1).equals(0)&&Integer.valueOf(str2).equals(0)&&Integer.valueOf(str3).equals(0)) {
 					JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
@@ -906,9 +1085,68 @@ class MWithdraw_Frame extends JFrame {
 				if(isempty1) str1 = "0";
 				if(isempty2) str2 = "0";
 				if(isempty3) str3 = "0";
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				for(int i=0; i<str1.length(); i++) {
+					if(str1.charAt(i)>57 || str1.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				for(int i=0; i<str2.length(); i++) {
+					if(str2.charAt(i)>57 || str2.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true; 
+					}
+				}
+				for(int i=0; i<str3.length(); i++) {
+					if(str3.charAt(i)>57 || str3.charAt(i)<48) {
+						isempty= true;
+						isempty1= true;
+						isempty2= true;
+						isempty3= true;
+					}
+				}
+				try {
+					Integer.parseInt(str);
+					Integer.parseInt(str1);
+					Integer.parseInt(str2);
+					Integer.parseInt(str3);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true;
+					isempty1= true;
+					isempty2= true;
+					isempty3= true;
+				}
 				ArrayList<Integer> input = new ArrayList<Integer>();
 				if(isempty && isempty2 && isempty3 && isempty1) {
 					JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(Integer.valueOf(str).equals(0)&&Integer.valueOf(str1).equals(0)&&Integer.valueOf(str2).equals(0)&&Integer.valueOf(str3).equals(0)) {
+					JOptionPane.showMessageDialog(null, "입력을 확인하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if((!isempty && Integer.parseInt(str)>500) || (MainFrame.getSystem().getATMcount().getCount50000()+Integer.parseInt(str) > 500)) {
+					JOptionPane.showMessageDialog(null, "5만원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if((!isempty1 && Integer.parseInt(str1)>500) || (MainFrame.getSystem().getATMcount().getCount10000()+Integer.parseInt(str1) > 500)) {
+					JOptionPane.showMessageDialog(null, "만원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if((!isempty2 && Integer.parseInt(str2)>500) || (MainFrame.getSystem().getATMcount().getCount5000()+Integer.parseInt(str2) > 500)) {
+					JOptionPane.showMessageDialog(null, "5천원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+				else if((!isempty3 && Integer.parseInt(str1)>500) || (MainFrame.getSystem().getATMcount().getCount1000()+Integer.parseInt(str3) > 500)) {
+					JOptionPane.showMessageDialog(null, "천원권을 입력 초과하였습니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
 					input.add(Integer.valueOf(str));
@@ -988,6 +1226,17 @@ class Input_MPW_Frame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String str = textField.getText();
 				Boolean isempty=textField.getText().isEmpty();
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) {
+						isempty= true;
+					}
+				}
+				try {
+					Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true; 
+				}
 				if(!isempty) {
 					Boolean ischeck = MainFrame.getSystem().input_MPW(Integer.parseInt(str));
 					if(ischeck) {
@@ -1087,22 +1336,22 @@ class Manager_Frame extends JFrame {
 		label_5.setBounds(210, 124, 113, 24);
 		contentPane.add(label_5);
 		
-		JTextPane textPane = new JTextPane();
+		JLabel textPane = new JLabel();
 		textPane.setText("\uD604\uC7AC\uC218\uB7C9"+MainFrame.getSystem().getATMcount().getCount50000());
 		textPane.setBounds(196, 177, 157, 25);
 		contentPane.add(textPane);
 		
-		JTextPane textPane_1 = new JTextPane();
+		JLabel textPane_1 = new JLabel();
 		textPane_1.setText("\uD604\uC7AC\uC218\uB7C9"+MainFrame.getSystem().getATMcount().getCount10000());
 		textPane_1.setBounds(195, 213, 157, 25);
 		contentPane.add(textPane_1);
 		
-		JTextPane textPane_2 = new JTextPane();
+		JLabel textPane_2 = new JLabel();
 		textPane_2.setText("\uD604\uC7AC\uC218\uB7C9"+MainFrame.getSystem().getATMcount().getCount5000());
 		textPane_2.setBounds(196, 248, 157, 25);
 		contentPane.add(textPane_2);
 		
-		JTextPane textPane_3 = new JTextPane();
+		JLabel textPane_3 = new JLabel();
 		textPane_3.setText("\uD604\uC7AC\uC218\uB7C9"+MainFrame.getSystem().getATMcount().getCount1000());
 		textPane_3.setBounds(195, 284, 157, 25);
 		contentPane.add(textPane_3);
@@ -1181,6 +1430,17 @@ class Input_MID_Frame extends JFrame {
 //				}
 				String str = textField.getText();
 				Boolean isempty=textField.getText().isEmpty();
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) {
+						isempty= true;
+					}
+				}
+				try {
+					Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true; 
+				}
 				if(!isempty) {
 					Boolean ischeck = MainFrame.getSystem().input_MID(Integer.parseInt(str));
 					if(ischeck) {
@@ -1264,7 +1524,7 @@ class DetailView_Frame extends JFrame {
 		lblNewLabel_1.setBounds(94, 221, 69, 18);
 		contentPane.add(lblNewLabel_1);
 		
-		JTextPane textPane = new JTextPane();
+		JLabel textPane = new JLabel();
 		textPane.setText(String.valueOf(ischeck));
 		textPane.setBounds(176, 203, 194, 48);
 		contentPane.add(textPane);
@@ -1301,8 +1561,9 @@ class Result_Frame extends JFrame {
 		label.setBounds(210, 134, 104, 24);
 		contentPane.add(label);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setText(String.valueOf(input));
+		JLabel textPane = new JLabel();
+		if(sys.get_input_menu()==4) textPane.setText("잔고:"+String.valueOf(input));
+		else textPane.setText("거래 후 잔액:"+String.valueOf(input));
 		textPane.setBounds(117, 170, 284, 159);
 		contentPane.add(textPane);
 		
@@ -1355,18 +1616,28 @@ class InputPW_Frame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String str = textField.getText();
-				Boolean isempty=textField.getText().isEmpty();		
-				
+				Boolean isempty=textField.getText().isEmpty();	
+				for(int i=0; i<str.length(); i++) {
+					if(str.charAt(i)>57 || str.charAt(i)<48) {
+						isempty= true;
+					}
+				}
+				try {
+					Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					isempty= true; 
+				}
 				if(sys.get_input_menu()==1||sys.get_input_menu()==2||sys.get_input_menu()==3)
 				{
 					if(!isempty) {
 						int ischeck = MainFrame.getSystem().input_PW(Integer.parseInt(str));
-						if(sys.get_isjackpot()==1 && ischeck>0) {
+						if(sys.get_isjackpot()>=1 && ischeck>=0) {
 							Jackpot_Frame JPF = new Jackpot_Frame(ischeck);
 							JPF.setVisible(true);
 							dispose();
 						}
-						else if(ischeck>0) {
+						else if(ischeck>=0) {
 							Result_Frame Result = new Result_Frame(ischeck);
 							Result.setVisible(true);
 							dispose();
@@ -1378,7 +1649,13 @@ class InputPW_Frame extends JFrame {
 							JOptionPane.showMessageDialog(null, "잔고 확인하세요", "잔고 부족", JOptionPane.WARNING_MESSAGE);
 						}
 						else if(ischeck==-3) {
-							JOptionPane.showMessageDialog(null, "ATM잔고 부족입니다.", "ATM잔고 부족", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null, "ATM잔고 부족입니다", "ATM잔고 부족", JOptionPane.WARNING_MESSAGE);
+						}
+						else if(ischeck==-4) {
+							JOptionPane.showMessageDialog(null, "일반계좌 최대 입금한도는 10억입니다", "한도초과", JOptionPane.WARNING_MESSAGE);
+						}
+						else if(ischeck==-5) {
+							JOptionPane.showMessageDialog(null, "ATM잔고 최대 한도는 초과입니다", "한도초과", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 					else{
@@ -1389,7 +1666,7 @@ class InputPW_Frame extends JFrame {
 				{
 					if(!isempty) {
 						int ischeck = MainFrame.getSystem().input_PW(Integer.parseInt(str));
-						if(ischeck>0) {
+						if(ischeck>=0) {
 							DetailView_Frame detailF = new DetailView_Frame(ischeck); 
 							detailF.setVisible(true);
 							dispose();
@@ -1488,9 +1765,18 @@ class Jackpot_Frame extends JFrame {
 		button.setFont(new Font("굴림", Font.BOLD, 15));
 		contentPane.add(button);
 		
-		JLabel lblJackpotAtm = new JLabel("\uC624\uB298\uC758 JACKPOT ATM \uB2F9\uCCA8\uC744 \uCD95\uD558\uD569\uB2C8\uB2E4. \uC0C1\uAE08 5\uB9CC\uC6D0\uC774 \uCD94\uAC00\uB85C \uCD9C\uAE08\uB429\uB2C8\uB2E4.");
-		lblJackpotAtm.setBounds(71, 285, 426, 24);
-		contentPane.add(lblJackpotAtm);
+		if(sys.get_isjackpot()==1) {
+			JLabel lblJackpotAtm = new JLabel("\uC624\uB298\uC758 JACKPOT ATM \uB2F9\uCCA8\uC744 \uCD95\uD558\uD569\uB2C8\uB2E4. \uC0C1\uAE08 5\uB9CC\uC6D0\uC774 \uCD94\uAC00\uB85C \uCD9C\uAE08\uB429\uB2C8\uB2E4.");
+			lblJackpotAtm.setBounds(71, 285, 426, 24);
+			contentPane.add(lblJackpotAtm);
+		}
+		else if(sys.get_isjackpot()==2) {
+			JLabel lblJackpotAtm = new JLabel("\uC624\uB298\uC758 JACKPOT ATM \uB2F9\uCCA8\uC744 \uCD95\uD558\uD569\uB2C8\uB2E4. \uC0C1\uAE08 5\uB9CC\uC6D0\uC774 \uCD94\uAC00\uB85C 입\uAE08\uB429\uB2C8\uB2E4.");
+			lblJackpotAtm.setBounds(71, 285, 426, 24);
+			contentPane.add(lblJackpotAtm);
+			
+			JOptionPane.showMessageDialog(null, "ATM지폐권 부족으로 계좌로 입금해드리겠습니다", "JackPot", JOptionPane.WARNING_MESSAGE);
+		}
 		
 		
 	}

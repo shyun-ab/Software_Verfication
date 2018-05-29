@@ -42,8 +42,13 @@ public class Timer extends Thread {
 					if(line.get(i)==null) break;
 				}
 				br.close();
-				cal.set(Integer.parseInt(line.get(0)),Integer.parseInt(line.get(1)), Integer.parseInt(line.get(2)), Integer.parseInt(line.get(3)), Integer.parseInt(line.get(4)), Integer.parseInt(line.get(5)));
-				day=Integer.parseInt(line.get(2));
+				if(line.size()<6) {
+					day=cal.get(Calendar.HOUR_OF_DAY);
+				}
+				else {
+					cal.set(Integer.parseInt(line.get(0)),Integer.parseInt(line.get(1)), Integer.parseInt(line.get(2)), Integer.parseInt(line.get(3)), Integer.parseInt(line.get(4)), Integer.parseInt(line.get(5)));
+					day=Integer.parseInt(line.get(2));
+				}
     		} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -96,7 +101,7 @@ public class Timer extends Thread {
 				e.printStackTrace();
 			}
     		try {
-				sleep(1000);
+				sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -142,6 +147,8 @@ public class Timer extends Thread {
      */
     public Boolean checkJackpot(int UserCount) {
         // TODO implement here
+    	System.out.println(UserCount);
+    	System.out.println(JackpotNum);
     	if(UserCount==JackpotNum) return true;
         return false;
     }

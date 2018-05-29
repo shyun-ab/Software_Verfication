@@ -183,6 +183,7 @@ public class System_Control {
     	Boolean isbool;
     	switch (inputMenu) {
 		case 2:
+			if((moneycount.getCount50000()+input50000>500)||(moneycount.getCount10000()+input10000>500)) return -5; 
 			int check=updateBalance();
     		if(check>0) {
     			for(int i=1;i<5;i++) {
@@ -208,12 +209,15 @@ public class System_Control {
     			return check;
     		}
     		else {
-    			return -1;
+    			return check;
     		}
 		case 3:
+			inputMoney=input.get(0);
 			return 0;
 		case 5:
-			if((moneycount.getCount50000()<input50000)||(moneycount.getCount10000()<input10000)) return -1; 
+			if(inputPOM==-1) {
+				if(((moneycount.getCount50000()<input50000)||(moneycount.getCount10000()<input10000)||(moneycount.getCount5000()<input5000)||(moneycount.getCount1000()<input1000))) return -1;
+			}
 			for(int i=1;i<5;i++) {
 				switch (i) {
 				case 1:
@@ -247,6 +251,7 @@ public class System_Control {
      */
     public int input_PW(int input) {
         // TODO implement here
+    	isjackpot=0;
     	int check = currentbank.checkPW(input);
     	if(check==0) return -1; //비밀번호 오류
     	switch (inputMenu) {
@@ -258,9 +263,22 @@ public class System_Control {
 	    		if(balance>=0) {
 	    			Boolean _isjackpot = timer.checkJackpot(UserCount);
 	    			if(_isjackpot) {
-	    				isjackpot=1;
 	    				input50000+=1;
-	    				TotalMoney-=50000;
+	    				isjackpot=1;
+	    				if((moneycount.getCount50000()<input50000)&&(moneycount.getCount10000()<(input10000+5))) {
+	    					input50000--;
+	    					inputMoney=-51200;
+	    					isjackpot=2;
+	    					balance=updateBalance();
+	    				}
+	    				else if((moneycount.getCount50000()<input50000)&&(moneycount.getCount10000()>=(input10000+5))) {
+	    					input50000--;
+	    					input10000+=5;
+	    					isjackpot=1;
+	    				}
+	    				else {
+		    				TotalMoney-=50000;
+	    				}
 	    			}
 	    			for(int i=1;i<5;i++) {
 	    				switch (i) {
@@ -295,7 +313,7 @@ public class System_Control {
 			if(check==1) {
 				int balance=0;
 				balance=updateBalance();
-				System.out.println(balance);
+				
 	    		if(balance>=0) {
 	    			return balance;
 	    		}
@@ -319,16 +337,39 @@ public class System_Control {
         // TODO implement here
     	if(inputMenu==3) {
     		if(!currentrbank.equals(currentbank)) {
-    			if(currentrbank!=null) currentrbank.balanceCount(inputMoney);
-    	    	return currentbank.balanceCount(inputMoney);
+    			int balance = currentbank.balanceCount(inputMoney+1200);
+    			
+    			if(balance>=0) {
+    			if(currentrbank!=null) {
+    				int checkbalance = currentrbank.balanceCount(inputMoney);
+    				
+    				if(checkbalance<0) return checkbalance;
+    			}
+    			
+    	    	return balance;
+    			}
+    			else {
+    				
+    				return balance;
+    			}
     		}
     		else {
     			return currentbank.balanceCount(inputMoney);
     		}
     	}
-    	else {
-    	if(currentrbank!=null) currentrbank.balanceCount(inputMoney);
+    	else if(inputMenu==2){
+//    	if(currentrbank!=null) {
+//    		int checkbalance=currentrbank.balanceCount(inputMoney);
+//    		if(checkbalance<0) return checkbalance;
+//    	}
     	return currentbank.balanceCount(inputMoney);
+    	}
+    	else {
+//    		if(currentrbank!=null) {
+//    			int checkbalance=currentrbank.balanceCount(inputMoney+1200);
+//    			if(checkbalance<0) return checkbalance;
+//    		}
+        	return currentbank.balanceCount(inputMoney+1200);
     	}
     }
 
@@ -359,11 +400,11 @@ public class System_Control {
         return false;
     }
     
-    public int get_inputMoney() {
-    	return inputMoney;
-    }
     public int get_isjackpot() {
     	return isjackpot;
 }
+    public Timer get_Timer() {
+    	return timer;
+    }
 
 }
