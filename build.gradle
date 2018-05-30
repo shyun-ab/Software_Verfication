@@ -34,7 +34,6 @@ repositories {
 }
 
 apply plugin: 'java'
-apply from: 'cobertura.gradle'
 apply plugin: "jacoco"
 
 test {
@@ -53,6 +52,6 @@ jacocoTestReport {
     reports {
         xml.enabled true
         csv.enabled false
-        html.destination "Test/build/jacocoHtml"
+        html.destination "Test/build/jacoco/jacocoHtml"
     }
 }
