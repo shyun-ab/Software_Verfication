@@ -1,0 +1,51 @@
+logger.info "Configuring Cobertura Plugin"
+ 
+configurations{
+  coberturaRuntime {extendsFrom testRuntime}
+}
+ 
+dependencies {
+  coberturaRuntime 'net.sourceforge.cobertura:cobertura:1.12.1'
+}
+ 
+def serFile="build/cobertura.ser"
+def classes="Test/bin/main, Test/bin/test"
+def classesCopy="${classes}-copy"
+ 
+ 
+task cobertura(type: Test){
+  dependencies {
+    testRuntime 'net.sourceforge.cobertura:cobertura:1.12.1'
+  }
+ 
+  systemProperty "net.sourceforge.cobertura.datafile", serFile
+}
+ 
+cobertura.doFirst  {
+  logger.quiet "Instrumenting classes for Cobertura"
+  ant {
+    delete(file:serFile, failonerror:false)
+    delete(dir: classesCopy, failonerror:false)
+    copy(todir: classesCopy) { fileset(dir: classes) }
+ 
+    taskdef(resource:'tasks.properties', classpath: configurations.coberturaRuntime.asPath)
+    'cobertura-instrument'(datafile: serFile) {
+      fileset(dir: classes,
+              includes:"**/*.class",
+              excludes:"**/*Test.class")
+    }
+  }
+}
+ 
+cobertura.doLast{
+  if (new File(classesCopy).exists()) {
+    //create html cobertura report
+    ant.'cobertura-report'(destdir:"Test/build/reports/cobertura",
+            format:'html', srcdir:"Test/src/main/", datafile: serFile)
+    //create xml cobertura report
+     ant.'cobertura-report'(destdir:"Test/build/reports/cobertura",
+            format:'xml', srcdir:"Test/src/main/", datafile: serFile)
+    ant.delete(file: classes)
+    ant.move(file: classesCopy, tofile: classes)
+  }
+}
