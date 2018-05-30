@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="User.AccountTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2018-05-30T16:30:03" hostname="DESKTOP-58J3OET" time="0.056">
+  <properties/>
+  <testcase name="checkID_False_test" classname="User.AccountTest" time="0.029"/>
+  <testcase name="checkPW_False_test" classname="User.AccountTest" time="0.003"/>
+  <testcase name="checkPW_True_test" classname="User.AccountTest" time="0.003"/>
+  <testcase name="CheckBalance_True_test" classname="User.AccountTest" time="0.006"/>
+  <testcase name="CheckBalance_False_test" classname="User.AccountTest" time="0.007"/>
+  <testcase name="checkID_True_test" classname="User.AccountTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
