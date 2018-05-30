@@ -44,7 +44,7 @@ test {
 
     jacoco {
         enabled = true
-        destinationFile = file("Test/build/jacoco/jacoco.exec")
+        destinationFile = file("build/jacoco/jacoco.exec")
     }
 }
 
@@ -52,6 +52,6 @@ jacocoTestReport {
     reports {
         xml.enabled true
         csv.enabled false
-        html.destination "Test/build/jacoco/jacocoHtml"
+        html.destination "build/jacoco/jacocoHtml"
     }
 }
