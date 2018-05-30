@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="System.System_ControlTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2018-05-30T16:30:03" hostname="DESKTOP-58J3OET" time="0.175">
+  <properties/>
+  <testcase name="input_RID_FalseTest" classname="System.System_ControlTest" time="0.097"/>
+  <testcase name="input_MID_FalseTest" classname="System.System_ControlTest" time="0.009"/>
+  <testcase name="input_MID_TrueTest" classname="System.System_ControlTest" time="0.013"/>
+  <testcase name="input_MPW_FalseTest" classname="System.System_ControlTest" time="0.009"/>
+  <testcase name="input_RID_TrueTest" classname="System.System_ControlTest" time="0.013"/>
+  <testcase name="input_MPW_TrueTest" classname="System.System_ControlTest" time="0.01"/>
+  <testcase name="input_ID_TrueTest" classname="System.System_ControlTest" time="0.01"/>
+  <testcase name="input_ID_FalseTest" classname="System.System_ControlTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
