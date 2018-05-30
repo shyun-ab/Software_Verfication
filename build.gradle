@@ -33,6 +33,10 @@ repositories {
     jcenter()
 }
 
+apply plugin: 'java'
+apply from: 'cobertura.gradle'
+apply plugin: "jacoco"
+
 test {
     reports {
         junitXml.enabled = true
@@ -40,6 +44,11 @@ test {
     }
 }
 
-
-apply plugin: 'java'
-apply from: 'cobertura.gradle'
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "Test/build/reports/coverage"
+    }
+}
