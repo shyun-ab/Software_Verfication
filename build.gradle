@@ -42,13 +42,17 @@ test {
         junitXml.enabled = true
         html.enabled = true
     }
+
+    jacoco {
+        enabled = true
+        destinationFile = file("Test/build/jacoco/jacoco.exec")
+    }
 }
 
 jacocoTestReport {
-    group = "Reporting"
     reports {
         xml.enabled true
         csv.enabled false
-        html.destination "Test/build/reports/coverage"
+        html.destination "Test/build/jacocoHtml"
     }
 }
