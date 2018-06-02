@@ -35,9 +35,10 @@ repositories {
 
 apply plugin: 'java'
 apply plugin: "jacoco"
-apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
+
+buildScan { termsOfServiceUrl = 'https://gradle.com/terms-of-service'; termsOfServiceAgree = 'yes' }
 
 test {
     reports {
@@ -56,28 +57,6 @@ jacocoTestReport {
         xml.enabled true
         csv.enabled false
         html.destination "build/jacoco/jacocoHtml"
-    }
-}
-
-checkstyle {
-    ignoreFailures = true
-    configFile = file('build/checkstyle/checkstyle.xml')
-    sourceSets {
-        main {
-            java {
-                srcDir 'src/main/java'
-            }
-            resources {
-                srcDir 'src/main/java'
-            }
-        }
-    }
-}
-
-checkstyleMain {
-    reports {
-        xml.enabled = true
-        html.enabled = true
     }
 }
 
