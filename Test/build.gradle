@@ -60,7 +60,7 @@ jacocoTestReport {
 }
 
 checkstyle {
-    ignoreFailures = ture
+    ignoreFailures = true
     configFile = file('build/checkstyle/checkstyle.xml')
 }
 
