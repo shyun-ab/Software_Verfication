@@ -96,7 +96,7 @@ pmd {
 pmdMain {
     reports {
         xml.enabled = true
-        html.enabled = true
+        html.enabled = false
     }
 }
 
@@ -107,6 +107,6 @@ findbugs {
 findbugsMain {
     reports {
         xml.enabled = true
-        html.enabled = true
+        html.enabled = false
     }
 }
