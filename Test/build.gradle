@@ -62,6 +62,16 @@ jacocoTestReport {
 checkstyle {
     ignoreFailures = true
     configFile = file('build/checkstyle/checkstyle.xml')
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/main/java'
+            }
+            resources {
+                srcDir 'src/main/java'
+            }
+        }
+    }
 }
 
 checkstyleMain {
@@ -92,6 +102,16 @@ pmd {
             'java-unnecessary',
             'java-unusedcode'
     ]
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/main/java'
+            }
+            resources {
+                srcDir 'src/main/java'
+            }
+        }
+    }
 }
 
 pmdMain {
